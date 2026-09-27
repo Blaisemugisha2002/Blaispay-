@@ -1,0 +1,482 @@
+/* =========================================
+   BlaisePay - Main Styles
+   ========================================= */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --primary: #087f5b;
+  --primary-dark: #056044;
+  --background: #f4f7f6;
+  --card: #ffffff;
+  --text: #17211d;
+  --muted: #6b7772;
+  --border: #e2e9e6;
+  --danger: #c0392b;
+  --warning: #d68910;
+  --shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--background);
+  color: var(--text);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* Main app container */
+.app {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.logo {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.header-subtitle {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* Cards */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+}
+
+/* Balance */
+.balance-card {
+  background: linear-gradient(135deg, #087f5b, #056044);
+  color: white;
+  border: none;
+}
+
+.balance-label {
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+.balance-amount {
+  font-size: 32px;
+  font-weight: 800;
+  margin: 6px 0 14px;
+}
+
+.balance-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.balance-item {
+  flex: 1;
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+/* Voice assistant */
+.voice-card {
+  text-align: center;
+}
+
+.voice-button {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  border: none;
+  background: var(--primary);
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(8, 127, 91, 0.25);
+}
+
+.voice-button:active {
+  transform: scale(0.96);
+}
+
+.voice-title {
+  margin-top: 10px;
+  font-weight: 700;
+}
+
+.voice-status {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+/* Section titles */
+.section-title {
+  font-size: 17px;
+  font-weight: 750;
+  margin-bottom: 12px;
+}
+
+/* Action grid */
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.action-button {
+  min-height: 76px;
+  border: 1px solid var(--border);
+  background: white;
+  border-radius: 15px;
+  padding: 12px 8px;
+  cursor: pointer;
+  color: var(--text);
+  font-weight: 700;
+  font-size: 13px;
+  transition: 0.15s ease;
+}
+
+.action-button:hover {
+  border-color: var(--primary);
+}
+
+.action-button:active {
+  transform: scale(0.98);
+}
+
+.action-icon {
+  display: block;
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+/* Forms */
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.input,
+select,
+textarea {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  background: white;
+  color: var(--text);
+  font-size: 16px;
+  outline: none;
+}
+
+.input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--primary);
+}
+
+/* Primary buttons */
+.primary-button {
+  width: 100%;
+  min-height: 50px;
+  border: none;
+  border-radius: 13px;
+  background: var(--primary);
+  color: white;
+  font-weight: 800;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.primary-button:hover {
+  background: var(--primary-dark);
+}
+
+.secondary-button {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: white;
+  color: var(--text);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Transaction list */
+.transaction-list {
+  list-style: none;
+}
+
+.transaction-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.transaction-item:last-child {
+  border-bottom: none;
+}
+
+.transaction-name {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.transaction-date {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.transaction-amount {
+  font-weight: 800;
+}
+
+.amount-in {
+  color: var(--primary);
+}
+
+.amount-out {
+  color: var(--danger);
+}
+
+/* Contact list */
+.contact-list {
+  list-style: none;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.contact-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #dff3eb;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+}
+
+.contact-info {
+  flex: 1;
+}
+
+.contact-name {
+  font-weight: 700;
+}
+
+.contact-number {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* Security */
+.security-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.security-item:last-child {
+  border-bottom: none;
+}
+
+.security-title {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.security-description {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* Status */
+.status {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #edf8f4;
+  color: var(--primary-dark);
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.status-warning {
+  background: #fff6df;
+  color: var(--warning);
+}
+
+.status-danger {
+  background: #fdecea;
+  color: var(--danger);
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  z-index: 1000;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-content {
+  width: 100%;
+  max-width: 430px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+/* Confirmation */
+.confirmation {
+  text-align: center;
+}
+
+.confirmation-icon {
+  font-size: 45px;
+  margin-bottom: 10px;
+}
+
+.confirmation-title {
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.confirmation-details {
+  background: var(--background);
+  border-radius: 13px;
+  padding: 14px;
+  margin: 15px 0;
+  text-align: left;
+}
+
+.confirmation-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 0;
+}
+
+.confirmation-label {
+  color: var(--muted);
+}
+
+/* Bottom navigation */
+.bottom-nav {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-top: 18px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 8px;
+}
+
+.nav-button {
+  border: none;
+  background: transparent;
+  padding: 10px 4px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.nav-button.active {
+  color: var(--primary);
+  background: #edf8f4;
+}
+
+/* Demo notice */
+.demo-notice {
+  text-align: center;
+  color: var(--muted);
+  font-size: 11px;
+  margin: 16px 0;
+}
+
+/* Utility */
+.hidden {
+  display: none !important;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+/* Mobile */
+@media (max-width: 360px) {
+  .app {
+    padding: 12px;
+  }
+
+  .balance-amount {
+    font-size: 28px;
+  }
+
+  .action-grid {
+    gap: 8px;
+  }
+
+  .action-button {
+    min-height: 70px;
+    font-size: 12px;
+  }
+}
