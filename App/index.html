@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BlaisePay</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div>
+      <h1>BlaisePay</h1>
+      <p>AI-powered money platform</p>
+    </div>
+    <button onclick="showMessage('Settings coming soon')">⚙️</button>
+  </header>
+
+  <main>
+
+    <section class="welcome">
+      <h2>Hello 👋</h2>
+      <p>How can BlaisePay help you today?</p>
+    </section>
+
+    <section class="voice-box">
+      <button class="voice-button" onclick="startVoice()">
+        🎤 Speak
+      </button>
+      <p id="voiceStatus">Say: "Send John 500"</p>
+    </section>
+
+    <section class="actions">
+
+      <button onclick="sendMoney()">💸<span>Send Money</span></button>
+
+      <button onclick="withdrawMoney()">🏧<span>Withdraw</span></button>
+
+      <button onclick="depositMoney()">➕<span>Deposit</span></button>
+
+      <button onclick="airtime()">📱<span>Airtime</span></button>
+
+      <button onclick="lipaMpesa()">🛒<span>Lipa na M-PESA</span></button>
+
+      <button onclick="bank()">🏦<span>Bank</span></button>
+
+      <button onclick="scan()">📷<span>Scan</span></button>
+
+      <button onclick="contacts()">👥<span>Contacts</span></button>
+
+      <button onclick="balance()">💰<span>Balance</span></button>
+
+      <button onclick="transactions()">📋<span>Transactions</span></button>
+
+      <button onclick="savings()">💳<span>Loans & Savings</span></button>
+
+      <button onclick="security()">🔐<span>Security</span></button>
+
+    </section>
+
+    <section class="balance-card">
+      <h3>My Balances</h3>
+
+      <div class="balance-item">
+        <span>M-PESA</span>
+        <strong>Demo</strong>
+      </div>
+
+      <div class="balance-item">
+        <span>Bank</span>
+        <strong>Demo</strong>
+      </div>
+    </section>
+
+    <section class="recent">
+      <h3>Recent Activity</h3>
+      <p>No transactions yet.</p>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>© 2026 BlaisePay</p>
+    <p>Demo version — no real money transfer</p>
+  </footer>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
