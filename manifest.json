@@ -1,0 +1,12 @@
+{
+  "name": "BlaisePay",
+  "short_name": "BlaisePay",
+  "description": "BlaisePay AI-powered mobile money platform",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f7f6",
+  "theme_color": "#087f5b",
+  "orientation": "portrait",
+  "icons": []
+}
