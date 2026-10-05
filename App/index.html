@@ -6,9 +6,12 @@
 
   <title>BlaisePay</title>
 
+  <meta
+    name="description"
+    content="BlaisePay - AI-powered Airtel Money focused financial platform"
+  >
+
   <meta name="theme-color" content="#087f5b">
-  <meta name="description"
-        content="BlaisePay - AI-powered Airtel Money platform">
 
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style.css">
@@ -16,414 +19,480 @@
 
 <body>
 
-<main class="app">
+  <main class="app">
 
-  <!-- HEADER -->
-  <header class="header">
-    <div>
-      <div class="logo">BlaisePay</div>
-      <div class="header-subtitle">
-        AI-powered Airtel Money platform
+    <!-- HEADER -->
+    <header class="header">
+      <div>
+        <div class="logo">BlaisePay</div>
+        <div class="header-subtitle">
+          AI-powered Airtel Money platform
+        </div>
       </div>
-    </div>
 
-    <button class="nav-button" onclick="alert('Settings demo')">
-      ⚙️
-    </button>
-  </header>
+      <button
+        class="nav-button"
+        type="button"
+        onclick="alert('Settings demo')"
+      >
+        ⚙️
+      </button>
+    </header>
 
 
-  <!-- BALANCE -->
-  <section class="card balance-card">
+    <!-- BALANCE -->
+    <section class="card balance-card">
 
-    <div class="balance-label">
-      Airtel Money Balance
-    </div>
+      <div class="balance-label">
+        Airtel Money Balance
+      </div>
 
-    <div class="balance-amount">
-      KES 0.00
-    </div>
-
-    <div class="balance-row">
-
-      <div class="balance-item">
-        <strong>Airtel Money</strong><br>
+      <div class="balance-amount">
         KES 0.00
       </div>
 
-      <div class="balance-item">
-        <strong>Bank</strong><br>
-        KES 0.00
-      </div>
+      <div class="balance-row">
 
-    </div>
-
-  </section>
-
-
-  <!-- AI ASSISTANT -->
-  <section class="card voice-card">
-
-    <button
-      class="voice-button"
-      onclick="alert('BlaisePay Assistant demo')">
-      🎤
-    </button>
-
-    <div class="voice-title">
-      BlaisePay Assistant
-    </div>
-
-    <div class="voice-status">
-      Speak or type what you want to do
-    </div>
-
-  </section>
-
-
-  <!-- MONEY -->
-  <section class="card">
-
-    <div class="section-title">
-      Money
-    </div>
-
-    <div class="action-grid">
-
-      <button class="action-button"
-        onclick="alert('Send Money demo')">
-        <span class="action-icon">💸</span>
-        Send Money
-      </button>
-
-      <button class="action-button"
-        onclick="alert('Receive Money demo')">
-        <span class="action-icon">📥</span>
-        Receive Money
-      </button>
-
-      <button class="action-button"
-        onclick="alert('Contacts demo')">
-        <span class="action-icon">👥</span>
-        Contacts
-      </button>
-
-      <button class="action-button"
-        onclick="alert('Deposit demo')">
-        <span class="action-icon">💰</span>
-        Deposit
-      </button>
-
-      <button class="action-button"
-        onclick="alert('Withdraw demo')">
-        <span class="action-icon">🏧</span>
-        Withdraw
-      </button>
-
-    </div>
-
-  </section>
-
-
-  <!-- AIRTEL MONEY -->
-  <section class="card">
-
-    <div class="section-title">
-      Airtel Money
-    </div>
-
-    <div class="action-grid">
-
-      <button class="action-button"
-        onclick="alert('Airtel Money demo')">
-        <span class="action-icon">🔴</span>
-        Airtel Money
-      </button>
-
-      <button class="action-button"
-        onclick="alert('Pay Bills demo')">
-        <span class="action-icon">🧾</span>
-        Pay Bills
-      </button>
-
-      <button class="action-button"
-        onclick="alert('Buy Goods demo')">
-        <span class="action-icon">🛒</span>
-        Buy Goods
-      </button>
-
-      <button class="action-button"
-        onclick="alert('Airtime demo')">
-        <span class="action-icon">📱</span>
-        Airtime
-      </button>
-
-      <button class="action-button"
-        onclick="alert('Bundles demo')">
-        <span class="action-icon">📶</span>
-        Bundles
-      </button>
-
-      <button class="action-button"
-        onclick="alert('QR Payments demo')">
-        <span class="action-icon">▣</span>
-        QR Payments
-      </button>
-
-    </div>
-
-  </section>
-
-
-  <!-- BANKING -->
-  <section class="card">
-
-    <div class="section-title">
-      Banking
-    </div>
-
-    <div class="action-grid">
-
-      <button class="action-button"
-        onclick="alert('Bank Accounts demo')">
-        <span class="action-icon">🏦</span>
-        Bank Accounts
-      </button>
-
-      <button class="action-button"
-        onclick="alert('Bank Transfer demo')">
-        <span class="action-icon">🔄</span>
-        Bank Transfer
-      </button>
-
-      <button class="action-button"
-        onclick="alert('Airtel to Bank demo')">
-        <span class="action-icon">➡️</span>
-        Airtel → Bank
-      </button>
-
-      <button class="action-button"
-        onclick="alert('Bank to Airtel demo')">
-        <span class="action-icon">⬅️</span>
-        Bank → Airtel
-      </button>
-
-    </div>
-
-  </section>
-
-
-  <!-- SCAN -->
-  <section class="card">
-
-    <div class="section-title">
-      Scan & Pay
-    </div>
-
-    <div class="action-grid">
-
-      <button class="action-button"
-        onclick="alert('QR Scanner demo')">
-        <span class="action-icon">📷</span>
-        Scan QR
-      </button>
-
-      <button class="action-button"
-        onclick="alert('Number Scanner demo')">
-        <span class="action-icon">🔍</span>
-        Scan Number
-      </button>
-
-      <button class="action-button"
-        onclick="alert('Merchant QR demo')">
-        <span class="action-icon">🏪</span>
-        Merchant QR
-      </button>
-
-      <button class="action-button"
-        onclick="alert('Payment Request demo')">
-        <span class="action-icon">💳</span>
-        Request Payment
-      </button>
-
-    </div>
-
-  </section>
-
-
-  <!-- MORE SERVICES -->
-  <section class="card">
-
-    <div class="section-title">
-      More Services
-    </div>
-
-    <div class="action-grid">
-
-      <button class="action-button"
-        onclick="alert('Transactions demo')">
-        <span class="action-icon">📋</span>
-        Transactions
-      </button>
-
-      <button class="action-button"
-        onclick="alert('Savings demo')">
-        <span class="action-icon">💰</span>
-        Savings
-      </button>
-
-      <button class="action-button"
-        onclick="alert('Loans demo')">
-        <span class="action-icon">🏦</span>
-        Loans
-      </button>
-
-      <button class="action-button"
-        onclick="alert('Payment Requests demo')">
-        <span class="action-icon">📨</span>
-        Payment Requests
-      </button>
-
-    </div>
-
-  </section>
-
-
-  <!-- SECURITY -->
-  <section class="card">
-
-    <div class="section-title">
-      Security
-    </div>
-
-    <div class="security-item">
-
-      <div>
-        <div class="security-title">
-          Fingerprint / Face ID
-        </div>
-
-        <div class="security-description">
-          Secure confirmation for sensitive actions
-        </div>
-      </div>
-
-      <span>🔐</span>
-
-    </div>
-
-
-    <div class="security-item">
-
-      <div>
-        <div class="security-title">
-          SIM Change Protection
-        </div>
-
-        <div class="security-description">
-          Extra verification on a new SIM or device
-        </div>
-      </div>
-
-      <span>🛡️</span>
-
-    </div>
-
-
-    <div class="security-item">
-
-      <div>
-        <div class="security-title">
-          Device Protection
-        </div>
-
-        <div class="security-description">
-          Helps protect your BlaisePay account on another device
-        </div>
-      </div>
-
-      <span>📱</span>
-
-    </div>
-
-  </section>
-
-
-  <!-- TRANSACTIONS -->
-  <section class="card">
-
-    <div class="section-title">
-      Recent Transactions
-    </div>
-
-    <ul class="transaction-list">
-
-      <li class="transaction-item">
-
-        <div>
-          <div class="transaction-name">
-            No transactions yet
-          </div>
-
-          <div class="transaction-date">
-            BlaisePay demo account
-          </div>
-        </div>
-
-        <div class="transaction-amount">
+        <div class="balance-item">
+          <strong>Airtel Money</strong><br>
           KES 0.00
         </div>
 
-      </li>
+        <div class="balance-item">
+          <strong>Bank</strong><br>
+          KES 0.00
+        </div>
 
-    </ul>
+        <div class="balance-item">
+          <strong>Wallet</strong><br>
+          KES 0.00
+        </div>
 
-  </section>
-
-
-  <!-- BOTTOM NAVIGATION -->
-  <nav class="bottom-nav">
-
-    <button
-      class="nav-button active"
-      onclick="alert('Home')">
-      🏠<br>
-      Home
-    </button>
-
-    <button
-      class="nav-button"
-      onclick="alert('Activity')">
-      📋<br>
-      Activity
-    </button>
-
-    <button
-      class="nav-button"
-      onclick="alert('Contacts')">
-      👥<br>
-      Contacts
-    </button>
-
-    <button
-      class="nav-button"
-      onclick="alert('Settings')">
-      ⚙️<br>
-      Settings
-    </button>
-
-  </nav>
+      </div>
+    </section>
 
 
-  <!-- DEMO NOTICE -->
-  <div class="demo-notice">
-    BlaisePay Demo • Airtel Money Focused
-  </div>
+    <!-- BLAISEPAY ASSISTANT -->
+    <section class="card voice-card">
 
-</main>
+      <button
+        class="voice-button"
+        type="button"
+        onclick="alert('BlaisePay Assistant demo')"
+      >
+        🎤
+      </button>
+
+      <div class="voice-title">
+        BlaisePay Assistant
+      </div>
+
+      <div class="voice-status">
+        Speak or type what you want to do
+      </div>
+
+    </section>
 
 
-<script src="script.js"></script>
+    <!-- MONEY -->
+    <section class="card">
+
+      <div class="section-title">
+        Money
+      </div>
+
+      <div class="action-grid">
+
+        <button
+          class="action-button"
+          type="button"
+          onclick="alert('Send Money demo')"
+        >
+          <span class="action-icon">💸</span>
+          Send Money
+        </button>
+
+        <button
+          class="action-button"
+          type="button"
+          onclick="alert('Receive Money demo')"
+        >
+          <span class="action-icon">📥</span>
+          Receive Money
+        </button>
+
+        <button
+          class="action-button"
+          type="button"
+          onclick="alert('Contacts demo')"
+        >
+          <span class="action-icon">👥</span>
+          Contacts
+        </button>
+
+        <button
+          class="action-button"
+          type="button"
+          onclick="alert('Request Money demo')"
+        >
+          <span class="action-icon">🤝</span>
+          Request Money
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- AIRTEL MONEY -->
+    <section class="card">
+
+      <div class="section-title">
+        Airtel Money
+      </div>
+
+      <div class="action-grid">
+
+        <button
+          class="action-button"
+          type="button"
+          onclick="alert('Airtel Money demo')"
+        >
+          <span class="action-icon">🔴</span>
+          Airtel Money
+        </button>
+
+        <button
+          class="action-button"
+          type="button"
+          onclick="alert('Deposit demo')"
+        >
+          <span class="action-icon">💰</span>
+          Deposit
+        </button>
+
+        <button
+          class="action-button"
+          type="button"
+          onclick="alert('Withdraw demo')"
+        >
+          <span class="action-icon">🏧</span>
+          Withdraw
+        </button>
+
+        <button
+          class="action-button"
+          type="button"
+          onclick="alert('Airtime demo')"
+        >
+          <span class="action-icon">📱</span>
+          Airtime
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- PAYMENTS -->
+    <section class="card">
+
+      <div class="section-title">
+        Payments
+      </div>
+
+      <div class="action-grid">
+
+        <button
+          class="action-button"
+          type="button"
+          onclick="alert('Pay Bills demo')"
+        >
+          <span class="action-icon">🧾</span>
+          Pay Bills
+        </button>
+
+        <button
+          class="action-button"
+          type="button"
+          onclick="alert('Buy Goods demo')"
+        >
+          <span class="action-icon">🛒</span>
+          Buy Goods
+        </button>
+
+        <button
+          class="action-button"
+          type="button"
+          onclick="alert('Merchant Payments demo')"
+        >
+          <span class="action-icon">🏪</span>
+          Merchant
+        </button>
+
+        <button
+          class="action-button"
+          type="button"
+          onclick="alert('QR Payment demo')"
+        >
+          <span class="action-icon">📷</span>
+          QR Payment
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- BANKING -->
+    <section class="card">
+
+      <div class="section-title">
+        Banking
+      </div>
+
+      <div class="action-grid">
+
+        <button
+          class="action-button"
+          type="button"
+          onclick="alert('Bank Transfer demo')"
+        >
+          <span class="action-icon">🏦</span>
+          Bank Transfer
+        </button>
+
+        <button
+          class="action-button"
+          type="button"
+          onclick="alert('Bank Balance demo')"
+        >
+          <span class="action-icon">💳</span>
+          Bank Balance
+        </button>
+
+        <button
+          class="action-button"
+          type="button"
+          onclick="alert('Add Bank demo')"
+        >
+          <span class="action-icon">➕</span>
+          Add Bank
+        </button>
+
+        <button
+          class="action-button"
+          type="button"
+          onclick="alert('Bank Accounts demo')"
+        >
+          <span class="action-icon">🏛️</span>
+          Bank Accounts
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- SCAN & SERVICES -->
+    <section class="card">
+
+      <div class="section-title">
+        More Services
+      </div>
+
+      <div class="action-grid">
+
+        <button
+          class="action-button"
+          type="button"
+          onclick="alert('Scan demo')"
+        >
+          <span class="action-icon">📷</span>
+          Scan
+        </button>
+
+        <button
+          class="action-button"
+          type="button"
+          onclick="alert('Transactions demo')"
+        >
+          <span class="action-icon">📋</span>
+          Transactions
+        </button>
+
+        <button
+          class="action-button"
+          type="button"
+          onclick="alert('Savings demo')"
+        >
+          <span class="action-icon">💰</span>
+          Savings
+        </button>
+
+        <button
+          class="action-button"
+          type="button"
+          onclick="alert('Bundles demo')"
+        >
+          <span class="action-icon">📶</span>
+          Bundles
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- SECURITY -->
+    <section class="card">
+
+      <div class="section-title">
+        Security
+      </div>
+
+
+      <div class="security-item">
+
+        <div>
+          <div class="security-title">
+            Fingerprint / Face ID
+          </div>
+
+          <div class="security-description">
+            Secure confirmation for sensitive actions
+          </div>
+        </div>
+
+        <span>🔐</span>
+
+      </div>
+
+
+      <div class="security-item">
+
+        <div>
+          <div class="security-title">
+            Device Protection
+          </div>
+
+          <div class="security-description">
+            Extra verification on a new device
+          </div>
+        </div>
+
+        <span>🛡️</span>
+
+      </div>
+
+
+      <div class="security-item">
+
+        <div>
+          <div class="security-title">
+            SIM Change Protection
+          </div>
+
+          <div class="security-description">
+            Additional verification after SIM changes
+          </div>
+        </div>
+
+        <span>🔒</span>
+
+      </div>
+
+    </section>
+
+
+    <!-- TRANSACTIONS -->
+    <section class="card">
+
+      <div class="section-title">
+        Recent Transactions
+      </div>
+
+      <ul class="transaction-list">
+
+        <li class="transaction-item">
+
+          <div>
+
+            <div class="transaction-name">
+              No transactions yet
+            </div>
+
+            <div class="transaction-date">
+              BlaisePay Demo Account
+            </div>
+
+          </div>
+
+          <div class="transaction-amount">
+            KES 0.00
+          </div>
+
+        </li>
+
+      </ul>
+
+    </section>
+
+
+    <!-- BOTTOM NAVIGATION -->
+    <nav class="bottom-nav">
+
+      <button
+        class="nav-button active"
+        type="button"
+        onclick="alert('Home')"
+      >
+        🏠<br>
+        Home
+      </button>
+
+
+      <button
+        class="nav-button"
+        type="button"
+        onclick="alert('Transactions')"
+      >
+        📋<br>
+        Activity
+      </button>
+
+
+      <button
+        class="nav-button"
+        type="button"
+        onclick="alert('Contacts')"
+      >
+        👥<br>
+        Contacts
+      </button>
+
+
+      <button
+        class="nav-button"
+        type="button"
+        onclick="alert('Settings')"
+      >
+        ⚙️<br>
+        Settings
+      </button>
+
+    </nav>
+
+
+    <!-- DEMO NOTICE -->
+    <div class="demo-notice">
+      BlaisePay Demo • Airtel Money Focused
+    </div>
+
+  </main>
+
+
+  <script src="script.js"></script>
 
 </body>
           </html>
