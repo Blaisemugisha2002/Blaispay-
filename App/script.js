@@ -1,691 +1,1067 @@
-/* =========================================
-   BlaisePay - Main Application Logic
-   DEMO / PROTOTYPE
-   ========================================= */
+/*
+========================================================
+BlaisePay
+Airtel Money Focused Application Logic
+DEMO / PROTOTYPE
+========================================================
+
+IMPORTANT:
+- Demo only
+- No real money is transferred
+- No provider PINs or API secrets are stored
+- Real integrations require official provider approval
+========================================================
+*/
 
 document.addEventListener("DOMContentLoaded", function () {
 
-  /* -----------------------------------------
-     Basic App State
-     ----------------------------------------- */
+  /* =====================================================
+     BASIC APP STATE
+  ===================================================== */
 
   const appState = {
-    balance: 0,
+    balance: 25000,
     transactions: [],
     voiceListening: false,
-    language: "English"
+    simVerified: true,
+    selectedContact: null
   };
 
-  /* -----------------------------------------
-     Helper: Show Message
-     ----------------------------------------- */
 
-  function showMessage(title, message) {
-    alert(title + "\n\n" + message);
-  }
+  /* =====================================================
+     DEMO CONTACTS
+  ===================================================== */
 
-  /* -----------------------------------------
-     Helper: Get Amount
-     ----------------------------------------- */
+  const contacts = [
+    {
+      name: "John",
+      phone: "0712345678"
+    },
+    {
+      name: "Mama",
+      phone: "0722334455"
+    },
+    {
+      name: "Aline",
+      phone: "0700112233"
+    },
+    {
+      name: "David",
+      phone: "0799887766"
+    }
+  ];
 
-  function askAmount() {
-    const amount = prompt("Enter amount:");
 
-    if (amount === null) {
-      return null;
+  /* =====================================================
+     SCREEN NAVIGATION
+  ===================================================== */
+
+  window.openScreen = function (id) {
+
+    const screens = document.querySelectorAll(".screen");
+
+    screens.forEach(function (screen) {
+      screen.classList.remove("active");
+    });
+
+    const target = document.getElementById(id);
+
+    if (target) {
+      target.classList.add("active");
     }
 
-    const value = Number(amount.replace(/,/g, ""));
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
 
-    if (!Number.isFinite(value) || value <= 0) {
-      showMessage("Invalid amount", "Please enter a valid amount.");
-      return null;
+    if (id === "contacts") {
+      renderContacts();
     }
 
-    return value;
-  }
+    if (id === "history") {
+      renderHistory();
+    }
 
-  /* -----------------------------------------
-     Send Money Demo
-     ----------------------------------------- */
+    updateBalanceDisplay();
+  };
 
-  function sendMoney() {
 
-    const recipient = prompt(
-      "Who do you want to send money to?\n\n" +
-      "Example: John"
+  window.goHome = function () {
+    openScreen("home");
+
+    const navHome = document.getElementById("navhome");
+
+    if (navHome) {
+      navHome.classList.add("activeNav");
+    }
+  };
+
+
+  /* =====================================================
+     TOAST / MESSAGE
+  ===================================================== */
+
+  window.toast = function (message) {
+
+    let toastBox = document.getElementById("toast");
+
+    if (!toastBox) {
+      alert(message);
+      return;
+    }
+
+    toastBox.textContent = message;
+    toastBox.style.display = "block";
+
+    setTimeout(function () {
+      toastBox.style.display = "none";
+    }, 2800);
+  };
+
+
+  window.demoAction = function (message) {
+    toast(message + " — Demo only");
+  };
+
+
+  /* =====================================================
+     BALANCE
+  ===================================================== */
+
+  function updateBalanceDisplay() {
+
+    const balanceElements = document.querySelectorAll(
+      "#balance, .balance-amount"
     );
+
+    balanceElements.forEach(function (element) {
+
+      element.textContent =
+        "KSh " +
+        Number(appState.balance).toLocaleString();
+
+    });
+  }
+
+
+  /* =====================================================
+     SEND MONEY
+  ===================================================== */
+
+  window.prepareSend = function () {
+
+    const recipientElement =
+      document.getElementById("recipient");
+
+    const amountElement =
+      document.getElementById("amount");
+
+    const confirmation =
+      document.getElementById("sendConfirm");
+
+    if (!recipientElement || !amountElement || !confirmation) {
+      toast("Send Money screen is not ready.");
+      return;
+    }
+
+    const recipient =
+      recipientElement.value.trim();
+
+    const amount =
+      Number(amountElement.value);
 
     if (!recipient) {
+      toast("Enter a recipient.");
       return;
     }
 
-    const amount = askAmount();
-
-    if (amount === null) {
+    if (!Number.isFinite(amount) || amount <= 0) {
+      toast("Enter a valid amount.");
       return;
     }
 
-    const confirmed = confirm(
-      "CONFIRM TRANSFER\n\n" +
-      "Recipient: " + recipient + "\n" +
-      "Amount: KES " + amount.toLocaleString() + "\n\n" +
-      "Do you want to continue?"
-    );
-
-    if (!confirmed) {
-      showMessage("Cancelled", "The transfer was cancelled.");
+    if (amount > appState.balance) {
+      toast("Demo balance is not enough.");
       return;
     }
 
-    /*
-      IMPORTANT:
-      This is only a prototype.
-      No real money is transferred.
-    */
+
+    confirmation.innerHTML = `
+      <div class="confirm">
+
+        <b>Confirm Send Money</b>
+
+        <p>
+          Recipient:
+          <strong>${escapeHtml(recipient)}</strong>
+        </p>
+
+        <p>
+          Amount:
+          <strong>
+            KSh ${amount.toLocaleString()}
+          </strong>
+        </p>
+
+        <p class="note">
+          This is a demo confirmation.
+          No real money will be transferred.
+        </p>
+
+        <button
+          class="btn"
+          onclick="completeDemoSend()">
+          Confirm
+        </button>
+
+        <button
+          class="btn alt"
+          onclick="cancelSend()">
+          Cancel
+        </button>
+
+      </div>
+    `;
+  };
+
+
+  window.cancelSend = function () {
+
+    const confirmation =
+      document.getElementById("sendConfirm");
+
+    if (confirmation) {
+      confirmation.innerHTML = "";
+    }
+  };
+
+
+  window.completeDemoSend = function () {
+
+    const recipientElement =
+      document.getElementById("recipient");
+
+    const amountElement =
+      document.getElementById("amount");
+
+    const confirmation =
+      document.getElementById("sendConfirm");
+
+    const recipient =
+      recipientElement.value.trim();
+
+    const amount =
+      Number(amountElement.value);
+
+
+    if (!recipient || !amount) {
+      toast("Invalid transfer.");
+      return;
+    }
+
+
+    confirmation.innerHTML = `
+      <div class="confirm">
+
+        <b>Security Confirmation</b>
+
+        <p class="note">
+          Production version will use the phone's
+          approved security and provider authentication.
+        </p>
+
+        <button
+          class="btn"
+          onclick="approveDemoSend()">
+          Approve Demo Transfer
+        </button>
+
+      </div>
+    `;
+  };
+
+
+  window.approveDemoSend = function () {
+
+    const recipient =
+      document.getElementById("recipient").value.trim();
+
+    const amount =
+      Number(document.getElementById("amount").value);
+
+    if (!recipient || !amount) {
+      toast("Transfer information is incomplete.");
+      return;
+    }
+
+    if (amount > appState.balance) {
+      toast("Demo balance is not enough.");
+      return;
+    }
+
+
+    appState.balance -= amount;
+
 
     appState.transactions.unshift({
-      type: "Send Money",
+      type: "Sent",
       name: recipient,
-      amount: amount,
+      amount: "- KSh " + amount.toLocaleString(),
       date: new Date().toLocaleString()
     });
 
-    showMessage(
-      "Demo Transfer",
-      "Transfer approved in the BlaisePay prototype.\n\n" +
-      "No real money was transferred."
+
+    updateBalanceDisplay();
+    renderHistory();
+
+
+    const confirmation =
+      document.getElementById("sendConfirm");
+
+    if (confirmation) {
+
+      confirmation.innerHTML = `
+        <div class="confirm">
+
+          <b>✓ Demo Transfer Successful</b>
+
+          <p>
+            Sent to:
+            <strong>${escapeHtml(recipient)}</strong>
+          </p>
+
+          <p>
+            Amount:
+            <strong>
+              KSh ${amount.toLocaleString()}
+            </strong>
+          </p>
+
+          <p class="note">
+            No real money was moved.
+          </p>
+
+        </div>
+      `;
+    }
+
+    toast("Demo transfer completed.");
+  };
+
+
+  /* =====================================================
+     RECEIVE MONEY
+  ===================================================== */
+
+  window.receiveMoneyDemo = function () {
+
+    toast(
+      "Receive Money flow opened — Demo only"
     );
+  };
+
+
+  /* =====================================================
+     DEPOSIT
+  ===================================================== */
+
+  window.depositMoney = function () {
+
+    toast(
+      "Deposit flow opened — Demo only"
+    );
+  };
+
+
+  /* =====================================================
+     WITHDRAW
+  ===================================================== */
+
+  window.withdrawMoney = function () {
+
+    toast(
+      "Withdraw flow opened — Demo only"
+    );
+  };
+
+
+  /* =====================================================
+     AIRTIME
+  ===================================================== */
+
+  window.buyAirtime = function () {
+
+    toast(
+      "Airtime purchase prepared — Demo only"
+    );
+  };
+
+
+  /* =====================================================
+     PAY BILLS
+  ===================================================== */
+
+  window.payBill = function () {
+
+    toast(
+      "Bill payment flow opened — Demo only"
+    );
+  };
+
+
+  /* =====================================================
+     BUY GOODS
+  ===================================================== */
+
+  window.buyGoods = function () {
+
+    toast(
+      "Merchant payment flow opened — Demo only"
+    );
+  };
+
+
+  /* =====================================================
+     CONTACTS
+  ===================================================== */
+
+  function renderContacts() {
+
+    const contactList =
+      document.getElementById("contactList");
+
+    if (!contactList) {
+      return;
+    }
+
+
+    contactList.innerHTML =
+      contacts.map(function (contact) {
+
+        return `
+          <div class="row">
+
+            <div>
+              <b>${escapeHtml(contact.name)}</b>
+
+              <span class="muted">
+                ${escapeHtml(contact.phone)}
+              </span>
+            </div>
+
+            <button
+              class="btn alt"
+              style="width:auto"
+              onclick="selectContact('${contact.name}','${contact.phone}')">
+
+              Select
+
+            </button>
+
+          </div>
+        `;
+
+      }).join("");
   }
 
-  /* -----------------------------------------
-     Withdraw Demo
-     ----------------------------------------- */
 
-  function withdrawMoney() {
+  window.selectContact = function (name, phone) {
 
-    const amount = askAmount();
+    appState.selectedContact = {
+      name: name,
+      phone: phone
+    };
 
-    if (amount === null) {
+    openScreen("send");
+
+
+    const recipient =
+      document.getElementById("recipient");
+
+    if (recipient) {
+
+      recipient.value =
+        name + " • " + phone;
+    }
+
+    toast(
+      name + " selected."
+    );
+  };
+
+
+  /* =====================================================
+     SCAN / QR / OCR DEMO
+  ===================================================== */
+
+  window.simulateScan = function () {
+
+    const scanNumber =
+      document.getElementById("scanNumber");
+
+    if (!scanNumber) {
       return;
     }
 
-    const confirmed = confirm(
-      "CONFIRM WITHDRAWAL\n\n" +
-      "Amount: KES " + amount.toLocaleString() + "\n\n" +
-      "Continue?"
+    scanNumber.value =
+      "0712345678";
+
+    toast(
+      "Demo scan recognized a phone number."
     );
+  };
 
-    if (!confirmed) {
-      return;
-    }
 
-    showMessage(
-      "Withdraw Demo",
-      "Withdrawal flow opened successfully.\n\n" +
-      "No real transaction was performed."
-    );
-  }
+  window.useScanned = function () {
 
-  /* -----------------------------------------
-     Deposit Demo
-     ----------------------------------------- */
+    const scanNumber =
+      document.getElementById("scanNumber");
 
-  function depositMoney() {
+    const recipient =
+      document.getElementById("recipient");
 
-    const amount = askAmount();
 
-    if (amount === null) {
-      return;
-    }
+    if (!scanNumber || !scanNumber.value.trim()) {
 
-    showMessage(
-      "Deposit",
-      "Deposit flow opened.\n\n" +
-      "Amount: KES " +
-      amount.toLocaleString() +
-      "\n\n" +
-      "This is currently a prototype."
-    );
-  }
-
-  /* -----------------------------------------
-     Airtime Demo
-     ----------------------------------------- */
-
-  function buyAirtime() {
-
-    const phone = prompt(
-      "Enter phone number for airtime:"
-    );
-
-    if (!phone) {
-      return;
-    }
-
-    const amount = askAmount();
-
-    if (amount === null) {
-      return;
-    }
-
-    const confirmed = confirm(
-      "CONFIRM AIRTIME\n\n" +
-      "Phone: " + phone + "\n" +
-      "Amount: KES " + amount.toLocaleString() + "\n\n" +
-      "Continue?"
-    );
-
-    if (!confirmed) {
-      return;
-    }
-
-    showMessage(
-      "Airtime Demo",
-      "Airtime purchase flow completed in demo mode.\n\n" +
-      "No real airtime was purchased."
-    );
-  }
-
-  /* -----------------------------------------
-     Balance
-     ----------------------------------------- */
-
-  function showBalance() {
-
-    showMessage(
-      "BlaisePay Balance",
-      "Demo Balance: KES " +
-      appState.balance.toLocaleString() +
-      "\n\n" +
-      "Later this section will connect to approved financial APIs."
-    );
-  }
-
-  /* -----------------------------------------
-     Transactions
-     ----------------------------------------- */
-
-  function showTransactions() {
-
-    if (appState.transactions.length === 0) {
-
-      showMessage(
-        "Transactions",
-        "No demo transactions yet."
+      toast(
+        "Scan a number first."
       );
 
       return;
     }
 
-    let text = "";
 
-    appState.transactions
-      .slice(0, 10)
-      .forEach(function (transaction, index) {
+    openScreen("send");
 
-        text +=
-          (index + 1) +
-          ". " +
-          transaction.type +
-          "\n" +
-          transaction.name +
-          "\n" +
-          "KES " +
-          transaction.amount.toLocaleString() +
-          "\n" +
-          transaction.date +
-          "\n\n";
-      });
 
-    showMessage(
-      "Recent Transactions",
-      text
+    if (recipient) {
+
+      recipient.value =
+        scanNumber.value.trim();
+    }
+
+    toast(
+      "Number added to Send Money."
     );
-  }
+  };
 
-  /* -----------------------------------------
-     Voice Assistant
-     ----------------------------------------- */
 
-  function startVoiceAssistant(button) {
+  window.scanQrDemo = function () {
 
-    if (appState.voiceListening) {
-      appState.voiceListening = false;
+    toast(
+      "QR scanner opened — Demo only"
+    );
+  };
 
-      if (button) {
-        button.textContent = "🎤";
-      }
 
-      showMessage(
-        "Voice Assistant",
-        "Voice assistant stopped."
+  /* =====================================================
+     BANKING
+  ===================================================== */
+
+  window.openBankTransfer = function () {
+
+    toast(
+      "Bank Transfer opened — Demo only"
+    );
+  };
+
+
+  window.bankToBankTransfer = function () {
+
+    toast(
+      "Bank → Bank transfer opened — Demo only"
+    );
+  };
+
+
+  window.airtelToBank = function () {
+
+    toast(
+      "Airtel Money → Bank flow opened — Demo only"
+    );
+  };
+
+
+  window.bankToAirtel = function () {
+
+    toast(
+      "Bank → Airtel Money flow opened — Demo only"
+    );
+  };
+
+
+  /* =====================================================
+     BANK TRANSFER FORM
+  ===================================================== */
+
+  window.prepareBankTransfer = function () {
+
+    const bank =
+      document.getElementById("bankName");
+
+    const account =
+      document.getElementById("bankAccount");
+
+    const amount =
+      document.getElementById("bankAmount");
+
+    if (!bank || !account || !amount) {
+
+      toast(
+        "Bank transfer screen is not ready."
       );
 
       return;
     }
 
-    appState.voiceListening = true;
 
-    if (button) {
-      button.textContent = "⏹️";
+    const bankName =
+      bank.value.trim();
+
+    const accountNumber =
+      account.value.trim();
+
+    const transferAmount =
+      Number(amount.value);
+
+
+    if (!bankName) {
+
+      toast(
+        "Select a bank."
+      );
+
+      return;
     }
+
+
+    if (!accountNumber) {
+
+      toast(
+        "Enter the account number."
+      );
+
+      return;
+    }
+
+
+    if (
+      !Number.isFinite(transferAmount) ||
+      transferAmount <= 0
+    ) {
+
+      toast(
+        "Enter a valid amount."
+      );
+
+      return;
+    }
+
+
+    toast(
+      "Bank transfer ready for confirmation — Demo only"
+    );
+  };
+
+
+  /* =====================================================
+     TRANSACTION HISTORY
+  ===================================================== */
+
+  function renderHistory() {
+
+    const historyList =
+      document.getElementById("historyList");
+
+    if (!historyList) {
+      return;
+    }
+
+
+    if (
+      !appState.transactions ||
+      appState.transactions.length === 0
+    ) {
+
+      historyList.innerHTML = `
+        <div class="confirm">
+          <b>No transactions yet</b>
+          <p class="note">
+            Demo account
+          </p>
+        </div>
+      `;
+
+      return;
+    }
+
+
+    historyList.innerHTML =
+      appState.transactions.map(function (tx) {
+
+        return `
+          <div class="row">
+
+            <div>
+
+              <b>
+                ${escapeHtml(tx.type)}
+              </b>
+
+              <span class="muted">
+                ${escapeHtml(tx.name)}
+              </span>
+
+              <span class="muted">
+                ${escapeHtml(tx.date)}
+              </span>
+
+            </div>
+
+            <b>
+              ${escapeHtml(tx.amount)}
+            </b>
+
+          </div>
+        `;
+
+      }).join("");
+  }
+
+
+  /* =====================================================
+     SECURITY
+  ===================================================== */
+
+  window.simulateSimChange = function () {
+
+    appState.simVerified = false;
+
+
+    const status =
+      document.getElementById("simStatus");
+
+
+    if (status) {
+
+      status.textContent =
+        "Verification required";
+    }
+
+
+    toast(
+      "SIM change detected. Sensitive actions are locked in this demo."
+    );
+  };
+
+
+  window.verifySimDemo = function () {
+
+    appState.simVerified = true;
+
+
+    const status =
+      document.getElementById("simStatus");
+
+
+    if (status) {
+
+      status.textContent =
+        "Verified";
+    }
+
+
+    toast(
+      "Demo verification completed."
+    );
+  };
+
+
+  window.biometricDemo = function () {
+
+    toast(
+      "Biometric confirmation requested — Demo only"
+    );
+  };
+
+
+  /* =====================================================
+     VOICE ASSISTANT
+  ===================================================== */
+
+  window.startVoice = function () {
+
+    if (
+      "webkitSpeechRecognition" in window ||
+      "SpeechRecognition" in window
+    ) {
+
+      const Recognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+
+      const recognition =
+        new Recognition();
+
+
+      recognition.lang =
+        "en-US";
+
+
+      recognition.interimResults =
+        false;
+
+
+      recognition.maxAlternatives =
+        1;
+
+
+      appState.voiceListening =
+        true;
+
+
+      toast(
+        "Listening..."
+      );
+
+
+      recognition.onresult =
+        function (event) {
+
+          appState.voiceListening =
+            false;
+
+
+          const speech =
+            event.results[0][0].transcript;
+
+
+          toast(
+            "Heard: " + speech
+          );
+
+
+          parseVoiceCommand(
+            speech
+          );
+        };
+
+
+      recognition.onerror =
+        function () {
+
+          appState.voiceListening =
+            false;
+
+
+          toast(
+            "Voice unavailable. Type the command instead."
+          );
+        };
+
+
+      recognition.onend =
+        function () {
+
+          appState.voiceListening =
+            false;
+        };
+
+
+      recognition.start();
+
+    } else {
+
+      toast(
+        "Voice recognition is not available in this browser."
+      );
+    }
+  };
+
+
+  /* =====================================================
+     VOICE COMMAND PARSER
+  ===================================================== */
+
+  function parseVoiceCommand(text) {
+
+    if (!text) {
+      return;
+    }
+
+
+    const normalized =
+      text.toLowerCase().trim();
+
 
     /*
-      Prototype voice flow.
-      Real AI voice processing will be added later.
+      Example:
+      "Send John 500"
+      "Rungikira John 500"
     */
 
-    setTimeout(function () {
 
-      appState.voiceListening = false;
+    const amountMatch =
+      normalized.match(/(\d+(?:\.\d+)?)/);
 
-      if (button) {
-        button.textContent = "🎤";
+
+    const amount =
+      amountMatch
+        ? Number(amountMatch[1])
+        : null;
+
+
+    if (
+      normalized.includes("send") ||
+      normalized.includes("rungikira")
+    ) {
+
+      openScreen("send");
+
+
+      const recipient =
+        document.getElementById("recipient");
+
+
+      const amountInput =
+        document.getElementById("amount");
+
+
+      if (recipient) {
+
+        let name =
+          normalized
+            .replace("send", "")
+            .replace("rungikira", "")
+            .replace(/\d+(?:\.\d+)?/g, "")
+            .trim();
+
+
+        if (name) {
+
+          recipient.value =
+            capitalize(name);
+        }
       }
 
-      const command = prompt(
-        "BlaisePay Voice Assistant\n\n" +
-        "Type a command for this demo.\n\n" +
-        "Example:\n" +
-        "Rungikira John 500"
-      );
-
-      if (!command) {
-        return;
-      }
-
-      processVoiceCommand(command);
-
-    }, 500);
-  }
-
-  /* -----------------------------------------
-     Voice Command Processor
-     ----------------------------------------- */
-
-  function processVoiceCommand(command) {
-
-    const lower = command.toLowerCase();
-
-    if (
-      lower.includes("send") ||
-      lower.includes("rungikira")
-    ) {
-
-      showMessage(
-        "Voice Command",
-        "I understood your send-money request.\n\n" +
-        "The next version will connect this command to Contacts."
-      );
-
-      return;
-    }
-
-    if (
-      lower.includes("balance") ||
-      lower.includes("nasigaranye")
-    ) {
-
-      showBalance();
-      return;
-    }
-
-    if (
-      lower.includes("transaction") ||
-      lower.includes("transactions")
-    ) {
-
-      showTransactions();
-      return;
-    }
-
-    showMessage(
-      "Voice Assistant",
-      "Command received:\n\n" +
-      command +
-      "\n\n" +
-      "This command will be connected to BlaisePay AI in a later stage."
-    );
-  }
-
-  /* -----------------------------------------
-     Contacts Demo
-     ----------------------------------------- */
-
-  function openContacts() {
-
-    const contacts = [
-      "John",
-      "Mama",
-      "Peter",
-      "Sarah"
-    ];
-
-    const selected = prompt(
-      "BlaisePay Contacts\n\n" +
-      contacts.join("\n") +
-      "\n\nType the contact name:"
-    );
-
-    if (!selected) {
-      return;
-    }
-
-    showMessage(
-      "Contact Selected",
-      selected +
-      " selected.\n\n" +
-      "The next stage will connect this to the phone's approved contact system."
-    );
-  }
-
-  /* -----------------------------------------
-     Scan Center Demo
-     ----------------------------------------- */
-
-  function openScanner() {
-
-    showMessage(
-      "BlaisePay Scan Center",
-      "Scan Center opened.\n\n" +
-      "Future scan types:\n\n" +
-      "• Phone number\n" +
-      "• Till number\n" +
-      "• PayBill number\n" +
-      "• Account number\n" +
-      "• QR code\n" +
-      "• Reference number\n\n" +
-      "The user will always verify the detected information before payment."
-    );
-  }
-
-  /* -----------------------------------------
-     Lipa na M-PESA Demo
-     ----------------------------------------- */
-
-  function openLipa() {
-
-    const choice = prompt(
-      "Lipa na M-PESA\n\n" +
-      "Choose:\n\n" +
-      "1. Buy Goods / Till\n" +
-      "2. PayBill\n" +
-      "3. Pochi la Biashara\n" +
-      "4. Scan to Pay"
-    );
-
-    if (!choice) {
-      return;
-    }
-
-    showMessage(
-      "Lipa na M-PESA",
-      "Selected option: " + choice +
-      "\n\nThis is currently a prototype."
-    );
-  }
-
-  /* -----------------------------------------
-     Bank
-     ----------------------------------------- */
-
-  function openBank() {
-
-    const choice = prompt(
-      "BlaisePay Bank\n\n" +
-      "1. KCB\n" +
-      "2. Equity\n" +
-      "3. Other Bank\n" +
-      "4. Bank to Bank\n" +
-      "5. Bank to M-PESA\n" +
-      "6. M-PESA to Bank"
-    );
-
-    if (!choice) {
-      return;
-    }
-
-    showMessage(
-      "Bank Services",
-      "Selected option: " +
-      choice +
-      "\n\nReal bank connections will only be added through approved bank APIs and partnerships."
-    );
-  }
-
-  /* -----------------------------------------
-     Loans & Savings
-     ----------------------------------------- */
-
-  function openSavings() {
-
-    showMessage(
-      "Loans & Savings",
-      "BlaisePay will later support approved savings and financial-service integrations.\n\n" +
-      "No loan is being offered by this prototype."
-    );
-  }
-
-  /* -----------------------------------------
-     Security
-     ----------------------------------------- */
-
-  function openSecurity() {
-
-    showMessage(
-      "Security & Authentication",
-      "BlaisePay security modules:\n\n" +
-      "✓ Face authentication\n" +
-      "✓ Fingerprint authentication\n" +
-      "✓ New-device verification\n" +
-      "✓ SIM-change protection\n" +
-      "✓ Transaction confirmation\n" +
-      "✓ Security alerts\n\n" +
-      "Biometric data will not be stored by BlaisePay."
-    );
-  }
-
-  /* -----------------------------------------
-     Language
-     ----------------------------------------- */
-
-  function changeLanguage() {
-
-    const language = prompt(
-      "Choose language:\n\n" +
-      "1. English\n" +
-      "2. Kiswahili\n" +
-      "3. Kirundi\n" +
-      "4. Kinyarwanda\n" +
-      "5. French"
-    );
-
-    if (!language) {
-      return;
-    }
-
-    showMessage(
-      "Language",
-      "Language selection saved for the prototype.\n\n" +
-      "Full multilingual interface will be added later."
-    );
-  }
-
-  /* -----------------------------------------
-     Generic Button Handler
-     ----------------------------------------- */
-
-  function handleButton(button) {
-
-    const text = button.innerText
-      .replace(/\s+/g, " ")
-      .trim()
-      .toLowerCase();
-
-    if (
-      text.includes("voice") ||
-      text.includes("speak")
-    ) {
-      startVoiceAssistant(button);
-      return;
-    }
-
-    if (text.includes("send money")) {
-      sendMoney();
-      return;
-    }
-
-    if (
-      text.includes("withdraw") ||
-      text.includes("withdraw cash")
-    ) {
-      withdrawMoney();
-      return;
-    }
-
-    if (
-      text.includes("deposit") ||
-      text.includes("add money")
-    ) {
-      depositMoney();
-      return;
-    }
-
-    if (
-      text.includes("airtime") ||
-      text.includes("data")
-    ) {
-      buyAirtime();
-      return;
-    }
-
-    if (
-      text.includes("lipa") ||
-      text.includes("m-pesa")
-    ) {
-      openLipa();
-      return;
-    }
-
-    if (
-      text.includes("bank")
-    ) {
-      openBank();
-      return;
-    }
-
-    if (
-      text.includes("scan") ||
-      text.includes("qr")
-    ) {
-      openScanner();
-      return;
-    }
-
-    if (
-      text.includes("contact")
-    ) {
-      openContacts();
-      return;
-    }
-
-    if (
-      text.includes("balance")
-    ) {
-      showBalance();
-      return;
-    }
-
-    if (
-      text.includes("transaction") ||
-      text.includes("statement")
-    ) {
-      showTransactions();
-      return;
-    }
-
-    if (
-      text.includes("loan") ||
-      text.includes("saving")
-    ) {
-      openSavings();
-      return;
-    }
-
-    if (
-      text.includes("security") ||
-      text.includes("settings")
-    ) {
-      openSecurity();
-      return;
-    }
-
-    if (
-      text.includes("language")
-    ) {
-      changeLanguage();
-      return;
-    }
-
-    showMessage(
-      "BlaisePay",
-      button.innerText.trim() +
-      "\n\nThis feature is connected to the BlaisePay prototype."
-    );
-  }
-
-  /* -----------------------------------------
-     Connect Buttons
-     ----------------------------------------- */
-
-  const buttons = document.querySelectorAll(
-    "button"
-  );
-
-  buttons.forEach(function (button) {
-
-    button.addEventListener(
-      "click",
-      function () {
-        handleButton(button);
-      }
-    );
-
-  });
-
-  /* -----------------------------------------
-     Keyboard Shortcut
-     ----------------------------------------- */
-
-  document.addEventListener(
-    "keydown",
-    function (event) {
 
       if (
-        event.key === "/" &&
-        document.activeElement.tagName !== "INPUT" &&
-        document.activeElement.tagName !== "TEXTAREA"
+        amountInput &&
+        amount
       ) {
 
-        const voiceButton =
-          document.querySelector(".voice-button");
-
-        if (voiceButton) {
-          startVoiceAssistant(voiceButton);
-        }
-
+        amountInput.value =
+          amount;
       }
 
+
+      toast(
+        "Send Money details prepared."
+      );
+
+      return;
     }
-  );
 
-  /* -----------------------------------------
-     Start App
-     ----------------------------------------- */
 
-  console.log(
-    "BlaisePay application initialized successfully."
-  );
+    if (
+      normalized.includes("balance") ||
+      normalized.includes("nasigaranye")
+    ) {
+
+      toast(
+        "Demo balance: KSh " +
+        appState.balance.toLocaleString()
+      );
+
+      return;
+    }
+
+
+    if (
+      normalized.includes("transaction") ||
+      normalized.includes("transactions")
+    ) {
+
+      openScreen("history");
+
+      return;
+    }
+
+
+    if (
+      normalized.includes("bank")
+    ) {
+
+      openScreen("bank");
+
+      return;
+    }
+
+
+    if (
+      normalized.includes("airtime")
+    ) {
+
+      openScreen("airtime");
+
+      return;
+    }
+
+
+    toast(
+      "I did not understand that command in this demo."
+    );
+  }
+
+
+  window.assistantDemo = function () {
+
+    toast(
+      "AI demo: Send John 500 → confirmation"
+    );
+  };
+
+
+  /* =====================================================
+     SIMPLE HELPERS
+  ===================================================== */
+
+  function capitalize(text) {
+
+    if (!text) {
+      return "";
+    }
+
+    return (
+      text.charAt(0).toUpperCase() +
+      text.slice(1)
+    );
+  }
+
+
+  function escapeHtml(value) {
+
+    return String(value)
+
+      .replace(/&/g, "&amp;")
+
+      .replace(/</g, "&lt;")
+
+      .replace(/>/g, "&gt;")
+
+      .replace(/"/g, "&quot;")
+
+      .replace(/'/g, "&#039;");
+  }
+
+
+  /* =====================================================
+     INITIALIZE
+  ===================================================== */
+
+  updateBalanceDisplay();
+  renderHistory();
 
 });
