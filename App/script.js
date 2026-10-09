@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
       amount: amount,
       date: new Date().toLocaleString()
     });
-
+updateRecentTransactions();
     updateBalance();
 
     showMessage(
@@ -506,8 +506,53 @@ document.addEventListener("DOMContentLoaded", () => {
       history
     );
   };
+function updateRecentTransactions() {
+  const list = document.querySelector(".transaction-list");
 
+  if (!list) return;
 
+  list.innerHTML = "";
+
+  if (appState.transactions.length === 0) {
+    list.innerHTML = `
+      <li class="transaction-item">
+        <div>
+          <div class="transaction-name">No transactions yet</div>
+          <div class="transaction-date">BlaisePay Demo Account</div>
+        </div>
+        <div class="transaction-amount">KES 0.00</div>
+      </li>
+    `;
+    return;
+  }
+
+  appState.transactions.slice(0, 5).forEach(tx => {
+    const item = document.createElement("li");
+    item.className = "transaction-item";
+
+    const details = document.createElement("div");
+
+    const name = document.createElement("div");
+    name.className = "transaction-name";
+    name.textContent = tx.type + " • " + tx.recipient;
+
+    const date = document.createElement("div");
+    date.className = "transaction-date";
+    date.textContent = tx.date;
+
+    const amount = document.createElement("div");
+    amount.className = "transaction-amount";
+    amount.textContent = "KES " + Number(tx.amount).toLocaleString();
+
+    details.appendChild(name);
+    details.appendChild(date);
+
+    item.appendChild(details);
+    item.appendChild(amount);
+
+    list.appendChild(item);
+  });
+}
   /* =====================================================
      SECURITY
   ===================================================== */
