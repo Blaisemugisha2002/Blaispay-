@@ -451,12 +451,42 @@ updateRecentTransactions();
 
 
   function openAirtelToBank() {
+  const phone = prompt("AIRTEL MONEY → BANK\nEnter your Airtel Money number:");
+  if (phone === null || phone.trim() === "") return;
 
-    showMessage(
-      "Airtel Money → Bank",
-      "Bank selection and approved provider integration will be added later.\n\nDemo only."
-    );
+  const bank = prompt("Enter receiving bank:");
+  if (bank === null || bank.trim() === "") return;
+
+  const account = prompt("Enter receiving bank account number:");
+  if (account === null || account.trim() === "") return;
+
+  const amountText = prompt("Enter amount in KES:");
+  if (amountText === null) return;
+
+  const amount = Number(amountText);
+
+  if (!Number.isFinite(amount) || amount <= 0) {
+    showMessage("Invalid amount", "Enter a valid amount.");
+    return;
   }
+
+  const confirmed = confirm(
+    "CONFIRM AIRTEL MONEY → BANK\n\n" +
+    "From Airtel number: " + phone + "\n" +
+    "Receiving bank: " + bank + "\n" +
+    "Account number: " + account + "\n" +
+    "Amount: KES " + amount.toLocaleString() +
+    "\n\nDemo only. Continue?"
+  );
+
+  if (!confirmed) return;
+
+  showMessage(
+    "✓ Demo Transfer",
+    "Airtel Money → Bank transfer prepared successfully.\n\n" +
+    "No real money was transferred."
+  );
+}
 
 
 function openBankToAirtel() {
