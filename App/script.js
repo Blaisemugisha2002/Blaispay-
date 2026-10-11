@@ -459,13 +459,39 @@ updateRecentTransactions();
   }
 
 
-  function openBankToAirtel() {
+function openBankToAirtel() {
+  const bank = prompt("BANK → AIRTEL MONEY\nEnter sending bank:");
+  if (bank === null || bank.trim() === "") return;
 
-    showMessage(
-      "Bank → Airtel Money",
-      "Bank selection and approved provider integration will be added later.\n\nDemo only."
-    );
+  const phone = prompt("Enter Airtel Money phone number:");
+  if (phone === null || phone.trim() === "") return;
+
+  const amountText = prompt("Enter amount in KES:");
+  if (amountText === null) return;
+
+  const amount = Number(amountText);
+
+  if (!Number.isFinite(amount) || amount <= 0) {
+    showMessage("Invalid amount", "Enter a valid amount.");
+    return;
   }
+
+  const confirmed = confirm(
+    "CONFIRM BANK → AIRTEL MONEY\n\n" +
+    "From bank: " + bank + "\n" +
+    "Airtel number: " + phone + "\n" +
+    "Amount: KES " + amount.toLocaleString() +
+    "\n\nDemo only. Continue?"
+  );
+
+  if (!confirmed) return;
+
+  showMessage(
+    "✓ Demo Transfer",
+    "Bank → Airtel Money transfer prepared successfully.\n\n" +
+    "No real money was transferred."
+  );
+}  
 
 
   /* =====================================================
